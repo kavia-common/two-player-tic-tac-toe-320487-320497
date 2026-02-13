@@ -20,8 +20,17 @@
 
   --focus: 0 0 0 4px rgba(59, 130, 246, 0.22);
 
-  --board-gap: 10px;
-  --square-size: 96px;
+  /* Board sizing (responsive): scales up on desktop while fitting on mobile */
+  --board-gap: clamp(9px, 1.2vw, 14px);
+
+  /*
+    Square size uses viewport to stay responsive but is capped so the board
+    remains within the card on large screens.
+    - min: 84px (small phones)
+    - fluid: ~12vw
+    - max: 140px (desktop)
+  */
+  --square-size: clamp(84px, 12vw, 140px);
 }
 
 * {
@@ -190,7 +199,8 @@
 }
 
 .square__value {
-  font-size: 44px;
+  /* Responsive mark size that tracks the new square size */
+  font-size: clamp(40px, 5.2vw, 64px);
   line-height: 1;
   font-weight: 900;
   letter-spacing: -0.02em;
@@ -299,7 +309,8 @@
 /* Responsive */
 @media (max-width: 420px) {
   :root {
-    --square-size: 84px;
+    /* Slightly smaller cap for extra-small devices */
+    --square-size: clamp(78px, 22vw, 96px);
     --board-gap: 9px;
   }
 
@@ -309,9 +320,5 @@
 
   .ttt__boardSection {
     padding: 14px;
-  }
-
-  .square__value {
-    font-size: 40px;
   }
 }
