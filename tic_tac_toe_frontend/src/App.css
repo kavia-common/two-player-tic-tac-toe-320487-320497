@@ -1,104 +1,317 @@
-/* CSS Variables for Theme Management */
+/* Modern light theme for Tic Tac Toe */
 :root {
-  /* Light theme colors */
-  --bg-primary: #ffffff;
-  --bg-secondary: #f8f9fa;
-  --text-primary: #282c34;
-  --text-secondary: #61dafb;
-  --border-color: #e9ecef;
-  --button-bg: #007bff;
-  --button-text: #ffffff;
+  /* Style guide: light modern theme with blue + cyan accents */
+  --bg: #f9fafb;
+  --surface: #ffffff;
+  --surface-2: #f3f4f6;
+
+  --text: #111827;
+  --muted: #64748b;
+
+  --primary: #3b82f6;
+  --success: #06b6d4;
+  --error: #ef4444;
+
+  --border: rgba(17, 24, 39, 0.10);
+  --shadow: 0 18px 40px rgba(17, 24, 39, 0.08);
+
+  --radius-lg: 20px;
+  --radius-md: 14px;
+
+  --focus: 0 0 0 4px rgba(59, 130, 246, 0.22);
+
+  --board-gap: 10px;
+  --square-size: 96px;
 }
 
-[data-theme="dark"] {
-  /* Dark theme colors */
-  --bg-primary: #1a1a1a;
-  --bg-secondary: #282c34;
-  --text-primary: #ffffff;
-  --text-secondary: #61dafb;
-  --border-color: #404040;
-  --button-bg: #0056b3;
-  --button-text: #ffffff;
+* {
+  box-sizing: border-box;
 }
 
 .App {
-  text-align: center;
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
   min-height: 100vh;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  background:
+    radial-gradient(1000px 500px at 15% 5%, rgba(59, 130, 246, 0.10), transparent 60%),
+    radial-gradient(900px 500px at 85% 10%, rgba(6, 182, 212, 0.12), transparent 55%),
+    linear-gradient(180deg, var(--bg), #ffffff);
+  color: var(--text);
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: var(--bg-secondary);
+/* Layout */
+.ttt {
   min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 28px 16px;
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+}
+
+.ttt__header {
+  width: min(560px, 100%);
+  display: grid;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.ttt__titleWrap {
+  display: grid;
+  gap: 6px;
+}
+
+.ttt__title {
+  margin: 0;
+  font-size: 34px;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.ttt__subtitle {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.ttt__status {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: 0 10px 24px rgba(17, 24, 39, 0.06);
+  backdrop-filter: blur(8px);
+}
+
+.ttt__statusLabel {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.ttt__pill {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: var(--text-primary);
-  transition: background-color 0.3s ease;
-  position: relative;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #ffffff, var(--surface-2));
+  border: 1px solid var(--border);
 }
 
-.App-link {
-  color: var(--text-secondary);
-  transition: color 0.3s ease;
-}
-
-.theme-toggle {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background-color: var(--button-bg);
-  color: var(--button-text);
-  border: none;
+.ttt__mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
   border-radius: 8px;
-  padding: 10px 20px;
+  font-weight: 900;
   font-size: 14px;
-  font-weight: 600;
+  line-height: 1;
+}
+
+.ttt__mark--x {
+  color: var(--primary);
+  background: rgba(59, 130, 246, 0.12);
+}
+
+.ttt__mark--o {
+  color: var(--success);
+  background: rgba(6, 182, 212, 0.14);
+}
+
+.ttt__boardSection {
+  width: min(560px, 100%);
+  background: rgba(255, 255, 255, 0.76);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  padding: 18px;
+  backdrop-filter: blur(10px);
+}
+
+/* Board */
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, var(--square-size));
+  grid-template-rows: repeat(3, var(--square-size));
+  gap: var(--board-gap);
+  justify-content: center;
+  align-content: center;
+  padding: 8px;
+  border-radius: 16px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.65), rgba(243, 244, 246, 0.45));
+  border: 1px dashed rgba(17, 24, 39, 0.12);
+}
+
+.square {
+  appearance: none;
+  border: 1px solid rgba(17, 24, 39, 0.12);
+  border-radius: 16px;
+  background: linear-gradient(180deg, #ffffff, rgba(243, 244, 246, 0.7));
+  box-shadow: 0 10px 18px rgba(17, 24, 39, 0.06);
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  display: grid;
+  place-items: center;
+
+  transition: transform 120ms ease, box-shadow 120ms ease, border-color 120ms ease;
+  user-select: none;
 }
 
-.theme-toggle:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-  opacity: 0.9;
+.square:hover {
+  transform: translateY(-1px);
+  border-color: rgba(59, 130, 246, 0.35);
+  box-shadow: 0 14px 24px rgba(17, 24, 39, 0.08);
 }
 
-.theme-toggle:active {
+.square:active {
   transform: translateY(0);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.square:focus-visible {
+  outline: none;
+  box-shadow: var(--focus), 0 14px 24px rgba(17, 24, 39, 0.08);
+  border-color: rgba(59, 130, 246, 0.55);
 }
 
-/* Responsive design for mobile */
-@media (max-width: 768px) {
-  .theme-toggle {
-    top: 10px;
-    right: 10px;
-    padding: 8px 16px;
-    font-size: 12px;
+.square:disabled {
+  cursor: not-allowed;
+  opacity: 0.92;
+}
+
+.square--filled:hover {
+  transform: none;
+  border-color: rgba(17, 24, 39, 0.12);
+  box-shadow: 0 10px 18px rgba(17, 24, 39, 0.06);
+}
+
+.square__value {
+  font-size: 44px;
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
+
+.square--x .square__value {
+  color: var(--primary);
+  text-shadow: 0 10px 26px rgba(59, 130, 246, 0.15);
+}
+
+.square--o .square__value {
+  color: var(--success);
+  text-shadow: 0 10px 26px rgba(6, 182, 212, 0.15);
+}
+
+.square--win {
+  border-color: rgba(6, 182, 212, 0.65);
+  background: linear-gradient(180deg, rgba(6, 182, 212, 0.12), rgba(59, 130, 246, 0.08));
+  box-shadow: 0 18px 36px rgba(6, 182, 212, 0.14);
+}
+
+/* Footer / Controls */
+.ttt__footer {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  appearance: none;
+  border: 1px solid rgba(59, 130, 246, 0.30);
+  background: linear-gradient(180deg, rgba(59, 130, 246, 1), rgba(37, 99, 235, 1));
+  color: #ffffff;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  padding: 10px 14px;
+  border-radius: 14px;
+  cursor: pointer;
+  box-shadow: 0 14px 26px rgba(59, 130, 246, 0.22);
+  transition: transform 120ms ease, box-shadow 120ms ease, filter 120ms ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.02);
+  box-shadow: 0 18px 34px rgba(59, 130, 246, 0.26);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn:focus-visible {
+  outline: none;
+  box-shadow: var(--focus), 0 18px 34px rgba(59, 130, 246, 0.22);
+}
+
+.ttt__help {
+  display: grid;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.ttt__legend {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.ttt__legendItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.ttt__legendDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  display: inline-block;
+}
+
+.ttt__legendDot--x {
+  background: var(--primary);
+}
+
+.ttt__legendDot--o {
+  background: var(--success);
+}
+
+.ttt__note {
+  font-size: 12px;
+}
+
+/* Responsive */
+@media (max-width: 420px) {
+  :root {
+    --square-size: 84px;
+    --board-gap: 9px;
+  }
+
+  .ttt__title {
+    font-size: 30px;
+  }
+
+  .ttt__boardSection {
+    padding: 14px;
+  }
+
+  .square__value {
+    font-size: 40px;
   }
 }
